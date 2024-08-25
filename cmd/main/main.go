@@ -1,13 +1,18 @@
 package main
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
+	"os"
 	"snippetbox/internal/config"
+	"snippetbox/internal/logger"
 )
 
 func main() {
 	cfg := config.Load()
+
+	_ = logger.SetAndReturn(cfg.Env, cfg.LogFile)
+	slog.Info("Configuration loaded")
 
 	mux := http.NewServeMux()
 	fileServer := http.FileServer(http.Dir(cfg.StaticDirectory))
@@ -16,13 +21,14 @@ func main() {
 	mux.HandleFunc("/snippet/view", snippetView)
 	mux.HandleFunc("/snippet/create", snippetCreate)
 
-	log.Printf("Starting server on %s", cfg.Addr)
+	slog.Info("Starting server", slog.String("address", cfg.Addr))
 	server := &http.Server{
 		Handler: mux,
 		Addr:    cfg.Addr,
 	}
 
 	if err := server.ListenAndServe(); err != nil {
-		log.Fatal(err)
+		slog.Error(err.Error())
+		os.Exit(1)
 	}
 }
