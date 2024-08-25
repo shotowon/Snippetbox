@@ -13,5 +13,6 @@ func Load() *config {
 	flag.StringVar(&cfg.Addr, "SNIPPETBOX_ADDR", ":4000", "Address of Snippetbox HTTP Server")
 	flag.StringVar(&cfg.StaticDirectory, "SNIPPETBOX_STATIC", "./ui/static", "Path to static assets")
 
+	flag.Parse()
 	return &cfg
 }
