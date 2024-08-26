@@ -13,6 +13,21 @@ type application struct {
 	server *http.Server
 }
 
+func New(cfg *config.Config) *application {
+	app := &application{
+		cfg: cfg,
+	}
+
+	router := app.router()
+	server := &http.Server{
+		Addr:    cfg.Addr,
+		Handler: router,
+	}
+
+	app.server = server
+	return app
+}
+
 func (a *application) Run(ctx context.Context) {
 	slog.Info("Starting server", slog.String("address", a.cfg.Addr))
 	if err := a.server.ListenAndServe(); err != nil {
