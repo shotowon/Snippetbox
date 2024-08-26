@@ -4,7 +4,6 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
-	"os"
 	"snippetbox/internal/config"
 )
 
@@ -28,12 +27,9 @@ func New(cfg *config.Config) *application {
 	return app
 }
 
-func (a *application) Run(ctx context.Context) {
+func (a *application) Run(ctx context.Context) error {
 	slog.Info("Starting server", slog.String("address", a.cfg.Addr))
-	if err := a.server.ListenAndServe(); err != nil {
-		slog.Error(err.Error())
-		os.Exit(1)
-	}
+	return a.server.ListenAndServe()
 }
 
 func (a *application) router() http.Handler {
