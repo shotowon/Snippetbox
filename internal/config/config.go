@@ -2,15 +2,15 @@ package config
 
 import "flag"
 
-type config struct {
+type Config struct {
 	Env             string
 	Addr            string
 	StaticDirectory string
 	LogFile         string
 }
 
-func Load() *config {
-	var cfg config
+func Load() *Config {
+	var cfg Config
 
 	flag.StringVar(&cfg.Env, "SNIPPETBOX_ENV", EnvLocal, "Environment in which Snippetbox is running")
 	flag.StringVar(&cfg.Addr, "SNIPPETBOX_ADDR", ":4000", "Address of Snippetbox HTTP Server")
