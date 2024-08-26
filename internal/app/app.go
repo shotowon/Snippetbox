@@ -10,9 +10,9 @@ type application struct {
 	server *http.Server
 }
 
-func (a *application) router(cfg *config.Config) http.Handler {
+func (a *application) router() http.Handler {
 	mux := http.NewServeMux()
-	fileServer := http.FileServer(http.Dir(cfg.StaticDirectory))
+	fileServer := http.FileServer(http.Dir(a.cfg.StaticDirectory))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 	mux.HandleFunc("/", a.home)
 	mux.HandleFunc("/snippet/view", a.snippetView)
