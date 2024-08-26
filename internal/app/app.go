@@ -1,13 +1,24 @@
 package app
 
 import (
+	"context"
+	"log/slog"
 	"net/http"
+	"os"
 	"snippetbox/internal/config"
 )
 
 type application struct {
 	cfg    *config.Config
 	server *http.Server
+}
+
+func (a *application) Run(ctx context.Context) {
+	slog.Info("Starting server", slog.String("address", a.cfg.Addr))
+	if err := a.server.ListenAndServe(); err != nil {
+		slog.Error(err.Error())
+		os.Exit(1)
+	}
 }
 
 func (a *application) router() http.Handler {
