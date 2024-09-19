@@ -6,7 +6,7 @@ import (
 	"os"
 	"snippetbox/internal/app"
 	"snippetbox/internal/config"
-	"snippetbox/internal/logger"
+	"snippetbox/internal/gears/logger"
 )
 
 func main() {
