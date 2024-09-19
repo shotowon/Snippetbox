@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE TABLE snippets (
+CREATE TABLE IF NOT EXISTS snippets (
 	id SERIAL PRIMARY KEY,
 	title VARCHAR(100) NOT NULL,
 	content TEXT NOT NULL,
