@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"snippetbox/internal/config"
+	"snippetbox/internal/gears/db"
 )
 
 type application struct {
@@ -30,6 +31,13 @@ func New(cfg *config.Config) *application {
 }
 
 func (a *application) Run(ctx context.Context) error {
+	db, err := db.OpenPostgres(a.cfg.MainDSN)
+	if err != nil {
+		return err
+	}
+
+	a.db = db
+
 	slog.Info("Starting server", slog.String("address", a.cfg.Addr))
 	return a.server.ListenAndServe()
 }
