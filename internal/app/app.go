@@ -35,7 +35,7 @@ func (a *application) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-
+	slog.Info("connected to the database", slog.String("db", a.cfg.MainDSN))
 	a.db = db
 
 	slog.Info("Starting server", slog.String("address", a.cfg.Addr))
