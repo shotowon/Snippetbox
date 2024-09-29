@@ -2,17 +2,17 @@ package app
 
 import (
 	"context"
-	"database/sql"
 	"log/slog"
 	"net/http"
 	"snippetbox/internal/config"
 	"snippetbox/internal/gears/db"
+	"snippetbox/internal/storage"
 )
 
 type application struct {
-	cfg    *config.Config
-	server *http.Server
-	db     *sql.DB
+	cfg     *config.Config
+	server  *http.Server
+	storage *storage.Storage
 }
 
 func New(cfg *config.Config) *application {
@@ -36,7 +36,7 @@ func (a *application) Run(ctx context.Context) error {
 		return err
 	}
 	slog.Info("connected to the database", slog.String("db", a.cfg.MainDSN))
-	a.db = db
+	a.storage = storage.New(db)
 
 	slog.Info("Starting server", slog.String("address", a.cfg.Addr))
 	return a.server.ListenAndServe()
