@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"database/sql"
 	"log/slog"
 	"net/http"
 	"snippetbox/internal/config"
@@ -10,6 +11,7 @@ import (
 type application struct {
 	cfg    *config.Config
 	server *http.Server
+	db     *sql.DB
 }
 
 func New(cfg *config.Config) *application {
